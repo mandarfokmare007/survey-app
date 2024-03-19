@@ -1,0 +1,11 @@
+export const PAGE_NAME = 'Cycle Review:';
+export const YEARS_OLD = 'Years old';
+export const CYCLE_NUM_TEXT = 'Cycle Number:';
+export const START_DAT_TEXT = 'Start Date:';
+export const END_DATE_TEXT = 'End Date:';
+export const SURVEYS_COMPLETED_TEXT = 'Surveys Completed:';
+export const COMPLETION_TEXT = 'Percentage:';
+export const REVIEW_TIME_TEXT = 'Review Time:';
+export const REVIEW_LABEL_TEXT = 'Review Remarks (Optional) :';
+export const CYCLE_ACT_TEXT = 'Cycle Activity';
+export const ADDITIONAL_ENTRY_TEXT = 'Additional Entries';

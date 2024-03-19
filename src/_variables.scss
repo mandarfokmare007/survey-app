@@ -1,0 +1,87 @@
+$cgBlueBG: #35b7e9;
+$adBlueBG: #0d77c0;
+$cgGrayBG: #f1f1f1;
+$white: #fff;
+$litGray: #aaa;
+$litGray2: #999;
+$litGray3: #ccc;
+$midGray: #505050;
+$midGray1: #707070;
+$midGray2: #606060;
+$red: #ff647c;
+$grey: grey;
+$lightGrey:  #DCDCDC;
+$defaultFontColor: #303030;
+$pageBgColor: #f2f5fa;
+$headTxtColor: #202020;
+$anchorBlueColor: #1c75bc;
+$anchorBlueColor2: #125892;
+$darkGray: #404040;
+$infoBlue: #6b7b9c;
+$redBg: #ff4c4c;
+$limeGreen: #6ec773;
+$leafGreen: #24b15c;
+$vLitGray: #ddd;
+$black: #000;
+$actBox1: #a499c0;
+$actBox2: #d88081;
+$actBox3: #96815e;
+$statusBox1: #bb6060;
+$statusBox2: #a577c2;
+$statusBox3: #a9baee;
+$vyletGray: #d0c9d6;
+$thickBlue: #43425d;
+$litWhite: #e9e9f0;
+$sliderBlue: #2196f3;
+$actualGreen: green;
+$actualRed: red;
+$errRed: #ea3a3a;
+$amberColor: #ffbf00;
+$solidGray: #4d4d4d;
+$chartLineColor: #eceef0;
+$chartGrayTxt: #666;
+$chartRedTxt: #dc3644;
+$escalateColor: #cf7f3d;
+$escalateColorDark: #bb631b;
+$tomato: #fe5759;
+
+@mixin mar-pad-0 {
+  margin: 0px;
+  padding: 0px;
+}
+@mixin d-flex {
+  display: flex;
+}
+@mixin space-between {
+  justify-content: space-between;
+}
+@mixin top-left-0 {
+  top: 0;
+  left: 0;
+}
+@mixin icon-red-green {
+  .pi {
+    // padding: 3px;
+    // border-radius: 50%;
+    // color: white;
+    margin: 0px 3px;
+
+    &.red {
+      color: $redBg;
+    }
+    &.green {
+      color: $actualGreen;
+    }
+  }
+}
+@mixin red-green-grey {
+  &.red {
+    background: $redBg;
+  }
+  &.green {
+    background: $actualGreen;
+  }
+  &.grey {
+    background: $lightGrey;
+  }
+}

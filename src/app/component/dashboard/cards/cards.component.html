@@ -1,0 +1,106 @@
+<div class="mainContent">
+  <div class="dashboard">
+    <div class="count">
+      <div class="activity">
+        <h2>
+          Today's Activity
+          <!-- <span class="asOfTime">As of <strong>{{ syncedTime }}</strong></span> -->
+        </h2>
+        <div class="boxes">
+          <div>
+            <div class="num">
+              <i class="icon-survey-requests"></i>
+              <!-- <span *ngIf="todaysActivity?.surveyRequests != null">{{
+                todaysActivity?.surveyRequests
+                }}</span> -->
+              <!-- <span *ngIf="todaysActivity?.surveyRequests == null">0</span> -->
+            </div>
+            <div class="boxLabel">Survey Requests</div>
+          </div>
+          <div>
+            <div class="num">
+              <i class="icon-red-text"></i>
+              <!-- <span *ngIf="todaysActivity?.patientsInRed != null">{{
+                todaysActivity?.patientsInRed
+                }}</span> -->
+              <!-- <span *ngIf="todaysActivity?.patientsInRed == null">0</span> -->
+            </div>
+            <div class="boxLabel">Patients in the red</div>
+          </div>
+          <div>
+            <div class="num">
+              <i class="icon-unanswered-survey"></i>
+              <!-- <span *ngIf="todaysActivity?.unansweredSurveys != null">{{
+                todaysActivity?.unansweredSurveys
+                }}</span> -->
+              <!-- <span *ngIf="todaysActivity?.unansweredSurveys == null">0</span> -->
+            </div>
+            <div class="boxLabel">Unanswered Surveys</div>
+          </div>
+          <div >
+            <div class="num">
+              <i class="icon-reviewed-surveys"></i>
+              <!-- <span *ngIf="todaysActivity?.reviewedSurveys != null">{{
+                todaysActivity?.reviewedSurveys
+                }}</span> -->
+              <!-- <span *ngIf="todaysActivity?.reviewedSurveys == null">0</span> -->
+            </div>
+            <div class="boxLabel">Reviewed Surveys</div>
+          </div>
+        </div>
+      </div>
+      <div class="status">
+        <h2>
+          Current Status
+          <button class="printCurrentStatus" >
+            <i class="icon-print"></i>
+          </button>
+        </h2>
+        <div class="boxes">
+          <div>
+            <div class="num">
+              <!-- <span><i class="pi pi-arrow-up rhEscalateIcon dashboard"></i></span> -->
+              <!-- <span *ngIf="currentStatus?.escalatedSurvey != null">{{
+                currentStatus?.escalatedSurvey
+                }}</span> -->
+              <!-- <span *ngIf="currentStatus?.escalatedSurvey == null">0</span> -->
+            </div>
+            <div class="boxLabel">Escalated Surveys</div>
+          </div>
+          <div>
+            <div class="num">
+              <i class="icon-unregistered-patients"></i>
+              <!-- <span *ngIf="currentStatus?.unregisteredPatients != null">{{
+                currentStatus?.unregisteredPatients
+                }}</span> -->
+              <!-- <span *ngIf="currentStatus?.unregisteredPatients == null">0</span> -->
+            </div>
+            <div class="boxLabel">Unregistered Patients</div>
+          </div>
+          <div>
+            <div class="num">
+              <i class="icon-offtrack"></i>
+              <!-- <span *ngIf="currentStatus?.offtrackPatient != null">{{
+                currentStatus?.offtrackPatient
+                }}</span> -->
+              <!-- <span *ngIf="currentStatus?.offtrackPatient == null">0</span> -->
+            </div>
+            <div class="boxLabel">Below Target</div>
+          </div>
+          <div>
+            <div class="num">
+              <i class="icon-review-cycle"></i>
+              <!-- <span *ngIf="currentStatus?.readyForCycleReview != null">{{
+                currentStatus?.readyForCycleReview
+                }}</span> -->
+              <!-- <span *ngIf="currentStatus?.readyForCycleReview == null">0</span> -->
+            </div>
+            <div class="boxLabel">Ready for cycle review</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-dashboard-table></app-dashboard-table>
+  </div>
+</div>
+

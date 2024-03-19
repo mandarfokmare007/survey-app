@@ -1,0 +1,386 @@
+<!-- <div class="mainContent">
+  <div class="dashboard" *ngIf="!printData"> -->
+    <div class="surveyReview">
+      <div class="topSection">
+        <span class="dashboardRefresh">
+          <h2>Survey Review</h2>
+          <p-button icon="pi pi-refresh" styleClass="p-button-sm" class="dashboardRefresh"
+            pTooltip="Refresh"></p-button>
+        </span>
+        <!-- <p-button
+          pRipple
+          icon="pi pi-refresh"
+          label="Refresh"
+          (click)="getClinicianDashboardData()"
+        ></p-button> -->
+        <!-- <button pButton pRipple class="" label="Onboard Patient" 
+        ></button> -->
+      </div>
+      <div class="pendingPrioritySurveyParent">
+        <div *ngFor="let priorityStatus of pendingPatientSurvey" class="pendingPrioritySurvey">
+          <div *ngIf="priorityStatus.status == 'RED'" class="priority" id="{{ priorityStatus?.surveyResponseId }}">
+            <div class="pAlerts">
+              <i pTooltip="PRIORITY ALERT" tooltipPosition="top" class="icon-patient-in-high-red"></i>
+              <span class="patientName">{{ priorityStatus?.name }}</span>
+              <span class="patientSurvey">{{ priorityStatus?.survey }}</span>
+              <span class="priorityAlert">PRIORITY ALERT</span>
+              <span class="patientDuration">{{
+               formatMilliSecstoDays(priorityStatus?.openDuration)
+                }}</span>
+              <a class="arrowBtn" href="javascript:void(0)"
+                >
+                <i class="pi pi-angle-right"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="reviewTabs">
+        <p-tabView (onChange)="selectedTab($event)" [(activeIndex)]="indexTab">
+          <p-tabPanel>
+            <ng-template pTemplate="header">
+              Escalated
+              <span class="badge escalated">{{ escalatedLength }}</span>
+            </ng-template>
+            <p-table #escalated [columns]="escalatedCols" [value]="escalatedPatientSurvey" *ngIf="escalatedLength">
+              <ng-template pTemplate="caption">
+                <div class="p-d-flex p-ai-center p-jc-flexend">
+                  <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="
+                        escalated.filterGlobal(
+                          $any($event.target).value,
+                          'contains'
+                        )
+                      " placeholder="Search" />
+                  </span>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th *ngFor="let col of columns" [ngClass]="[
+                      col.header == 'Status' ? 'statusColumn' : '',
+                      col.header == 'Cycle' ? 'cycleDayColumn' : '',
+                      col.header == 'Cycle End' ? 'cycleEndColumn' : '',
+                      col.header == 'Open Duration' ? 'odColumn' : '',
+                      col.header == 'Survey' ? 'surveyColumn' : '',
+                      col.header == 'Submitted Date' ? 'submittedDate' : '',
+                      col.header == 'Prev 5 Days' ? 'privDayColumn' : '',
+                      col.header == 'Patient' ? 'patientColumn' : ''
+                    ]" [pSortableColumn]="
+                      col.field != 'prevFiveDays' ? col.field : ''
+                    ">
+                    {{ col.header }}
+                    <p-sortIcon *ngIf="col.field != 'prevFiveDays'" [field]="col.field"></p-sortIcon>
+                  </th>
+                  <th width="50"></th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr id="{{ rowData?.surveyResponseId }}">
+                  <td *ngFor="let col of columns" [ngClass]="[
+                      col.field == 'submittedDate' ? 'submittedDate' : ''
+                    ]">
+                    <div *ngIf="col.field == 'status'">
+                      <!-- <span
+                        class="statusColor"
+                        [ngStyle]="{ 'background-color': rowData[col.field] }"
+                        >{{ rowData[col.field] | capitalize }}</span
+                      > -->
+                      <span class="statusColor" [ngStyle]="{ 'background-color': rowData[col.field] }"
+                        *ngIf="!isUpperCase(rowData[col.field])"
+                        (click)="passSurveyToReview(rowData?.surveyResponseId)">{{ rowData[col.field] | capitalize
+                        }}</span>
+                      <div class="statusHighRed" *ngIf="
+                          isUpperCase(rowData[col.field]) &&
+                          rowData[col.field] == 'RED'
+                        ">
+                        <span class="statusColor" [ngStyle]="{ 'background-color': rowData[col.field] }" (click)="
+                            passSurveyToReview(rowData?.surveyResponseId)
+                          ">{{ rowData[col.field] }} </span><i pTooltip="PRIORITY ALERT" tooltipPosition="top"
+                          class="icon-patient-in-high-red"></i>
+                      </div>
+                    </div>
+                    <div *ngIf="
+                        col.field != 'prevFiveDays' &&
+                        col.field != 'status' &&
+                        col.field != 'openDuration'
+                      ">
+                      {{ rowData[col.field] }}
+                    </div>
+                    <div *ngIf="col.field == 'openDuration'">
+                      {{ formatMilliSecstoDays(rowData[col.field]) }}
+                    </div>
+  
+                    <div class="prevColorsParent" *ngIf="col.field == 'prevFiveDays'">
+                      <div *ngFor="let prevDay of rowData[col.field]">
+                        <span class="prevColors" [ngStyle]="{
+                            'background-color':
+                              prevDay.score == 'grey'
+                                ? '#DCDCDC'
+                                : prevDay.score
+                          }"></span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <!-- <a href="javascript:void(0)" (click)="passSurveyToReview(rowData?.surveyResponseId)"
+                      [class.disabled]="isDisabled" [ngClass]="isDisabled ? 'isAnchorTagDisabled' : ''" [routerLink]="">
+                      <i class="pi pi-angle-right"></i></a> -->
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+            <div *ngIf="escalatedLength == 0" class="ifNoData"></div>
+          </p-tabPanel>
+          <!-- Cycle and Prev 5 Days columns in table are temporaryly hidden and will be removed -->
+          <p-tabPanel *ngIf="isRoleQhp">
+            <ng-template pTemplate="header">
+              Sign Off
+              <span class="badge signOff">{{ signoffLength }}</span>
+            </ng-template>
+            <p-table #signOff [columns]="signOffCols" [value]="signOffPatientSurvey" *ngIf="signoffLength">
+              <ng-template pTemplate="caption">
+                <div class="p-d-flex p-ai-center p-jc-flexend">
+                  <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="
+                        signOff.filterGlobal(
+                          $any($event.target).value,
+                          'contains'
+                        )
+                      " placeholder="Search" />
+                  </span>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th *ngFor="let col of columns" [ngClass]="[
+                      col.header == 'Status' ? 'statusColumn' : '',
+                      col.header == 'Cycle' ? 'cycleDayColumn' : '',
+                      col.header == 'Cycle End' ? 'cycleEndColumn' : '',
+                      col.header == 'Open Duration' ? 'odColumn' : '',
+                      col.header == 'Survey' ? 'surveyColumn' : '',
+                      col.header == 'Submitted Date' ? 'submittedDate' : '',
+                      col.header == 'Prev 5 Days' ? 'privDayColumn' : '',
+                      col.header == 'Patient' ? 'patientColumn' : ''
+                    ]" [pSortableColumn]="
+                      col.field != 'prevFiveDays' ? col.field : ''
+                    ">
+                    {{ col.header }}
+                    <p-sortIcon *ngIf="col.field != 'prevFiveDays'" [field]="col.field"></p-sortIcon>
+                  </th>
+                  <th width="50"></th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr id="{{ rowData?.surveyResponseId }}">
+                  <td *ngFor="let col of columns" [ngClass]="[
+                      col.field == 'submittedDate' ? 'submittedDate' : ''
+                    ]">
+                    <div *ngIf="col.field == 'status'">
+                      <!-- <span
+                        class="statusColor"
+                        [ngStyle]="{ 'background-color': rowData[col.field] }"
+                        >{{ rowData[col.field] | capitalize }}</span
+                      > -->
+                      <span class="statusColor" [ngStyle]="{ 'background-color': rowData[col.field] }"
+                        *ngIf="!isUpperCase(rowData[col.field])">{{ rowData[col.field] | capitalize }}</span>
+                      <div class="statusHighRed" *ngIf="
+                          isUpperCase(rowData[col.field]) &&
+                          rowData[col.field] == 'RED'
+                        ">
+                        <span class="statusColor" [ngStyle]="{ 'background-color': rowData[col.field] }">{{
+                          rowData[col.field] }} </span><i pTooltip="PRIORITY ALERT" tooltipPosition="top"
+                          class="icon-patient-in-high-red"></i>
+                      </div>
+                    </div>
+                    <!-- Cycle column Commented -->
+                    <div *ngIf="
+                        col.field != 'prevFiveDays' &&
+                        col.field != 'status' &&
+                        col.field != 'openDuration' &&
+                        col.field != 'cycle'
+                      ">
+                      {{ rowData[col.field] }}
+                    </div>
+                    <div *ngIf="col.field == 'openDuration'">
+                      {{ formatMilliSecstoDays(rowData[col.field]) }}
+                    </div>
+                    <!-- <div class="prevColorsParent" *ngIf="col.field == 'prevFiveDays'">
+                      <div *ngFor="let prevDay of rowData[col.field]">
+                        <span class="prevColors" [ngStyle]="{ 'background-color': prevDay.score == 'grey' ? '#DCDCDC' : prevDay.score }"></span>
+                      </div>
+                    </div> -->
+                  </td>
+                  <td>
+                    <a href="javascript:void(0)" >
+                      <i class="pi pi-angle-right"></i></a>
+                    <!-- <i class="fas fa-arrow-alt-circle-up"></i> -->
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+            <div *ngIf="signoffLength == 0" class="ifNoData"></div>
+          </p-tabPanel>
+          <p-tabPanel>
+            <ng-template pTemplate="header">
+              Pending
+              <span class="badge pending">{{ pendingLength }}</span>
+            </ng-template>
+            <p-table #pending [columns]="pendingCols" [value]="pendingPatientFilteredArray" *ngIf="pendingLength">
+              <ng-template pTemplate="caption">
+                <div class="p-d-flex p-ai-center p-jc-flexend">
+                  <!-- <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="
+                        pending.filterGlobal(
+                          $any($event.target).value,
+                          'contains'
+                        )
+                      " placeholder="Search" />
+                  </span> -->
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th *ngFor="let col of columns" [ngClass]="[
+                      col.header == 'Status' ? 'statusColumn' : '',
+                      col.header == 'Cycle' ? 'cycleDayColumn' : '',
+                      col.header == 'Cycle End' ? 'cycleEndColumn' : '',
+                      col.header == 'Open Duration' ? 'odColumn' : '',
+                      col.header == 'Survey' ? 'surveyColumn' : '',
+                      col.header == 'Submitted Date' ? 'submittedDate' : '',
+                      col.header == 'Prev 5 Days' ? 'privDayColumn' : '',
+                      col.header == 'Patient' ? 'patientColumn' : ''
+                    ]" [pSortableColumn]="
+                      col.field != 'prevFiveDays' ? col.field : ''
+                    ">
+                    {{ col.header }}
+                    <p-sortIcon *ngIf="col.field != 'prevFiveDays'" [field]="col.field"></p-sortIcon>
+                  </th>
+                  <th width="50"></th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr id="{{ rowData?.surveyResponseId }}">
+                  <td *ngFor="let col of columns" [ngClass]="[
+                      col.field == 'submittedDate' ? 'submittedDate' : ''
+                    ]">
+                    <div *ngIf="col.field != 'isClicked'">
+                      <div *ngIf="col.field == 'status'">
+                        <span class="statusColor" [ngStyle]="{ 'background-color': rowData[col.field] }"
+                          *ngIf="!isUpperCase(rowData[col.field])" (click)="
+                            passSurveyToReview(rowData?.surveyResponseId)
+                          ">
+                          {{ rowData[col.field] | capitalize }}</span>
+                      </div>
+                      <div *ngIf="
+                          col.field != 'prevFiveDays' &&
+                          col.field != 'status' &&
+                          col.field != 'openDuration'
+                        ">
+                        {{ rowData[col.field] }}
+                      </div>
+                      <div *ngIf="col.field == 'openDuration'">
+                        {{ formatMilliSecstoDays(rowData[col.field]) }}
+                      </div>
+                      <div class="prevColorsParent" *ngIf="col.field == 'prevFiveDays'">
+                        <div *ngFor="let prevDay of rowData[col.field]">
+                          <span class="prevColors" [ngStyle]="{
+                              'background-color':
+                                prevDay.score == 'grey'
+                                  ? '#DCDCDC'
+                                  : prevDay.score
+                            }"></span>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <a href="javascript:void(0)" (click)="passSurveyToReview(rowData?.surveyResponseId)">
+                      <i class="pi pi-angle-right"></i></a>
+                    <!-- <i class="fas fa-arrow-alt-circle-up"></i> -->
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+            <div *ngIf="pendingLength == 0" class="ifNoData"></div>
+          </p-tabPanel>
+          <p-tabPanel>
+            <ng-template pTemplate="header">
+              Completed
+              <span class="badge completed">{{
+                completedPatientSurvey.length
+                }}</span>
+            </ng-template>
+            <p-table #completed [columns]="completedCols" [value]="completedPatientSurvey"
+              *ngIf="completedPatientSurvey.length">
+              <ng-template pTemplate="caption">
+                <div class="p-d-flex p-ai-center p-jc-flexend">
+                  <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <!-- <input pInputText type="text" placeholder="Search" /> -->
+                  </span>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th *ngFor="let col of columns" [ngClass]="[
+                      col.header == 'Status' ? 'statusColumn' : '',
+                      col.header == 'Cycle' ? 'cycleDayColumn' : '',
+                      col.header == 'Survey' ? 'surveyColumn' : '',
+                      col.header == '' ? 'actColumn' : '',
+                      col.header == 'Closed' ? 'closedColumn' : '',
+                      col.header == 'Closed By' ? 'closedByColumn' : '',
+                      col.header == 'Submitted' ? 'submittedDate' : '',
+                      col.header == 'Patient' ? 'patientColumn' : ''
+                    ]" [pSortableColumn]="
+                      col.field != 'escalatedStatus' ? col.field : ''
+                    ">
+                    {{ col.header }}
+                    <p-sortIcon *ngIf="col.field != 'escalatedStatus'" [field]="col.field"></p-sortIcon>
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr>
+                  <td *ngFor="let col of columns">
+                    <div *ngIf="
+                        col.field != 'escalatedStatus' && col.field == 'status'
+                      ">
+                      <span class="statusColor" [ngStyle]="{
+                          'background-color':
+                            rowData[col.field] == 'grey'
+                              ? 'grey'
+                              : rowData[col.field]
+                        }">{{
+                        (rowData[col.field] == "grey"
+                        ? "inc"
+                        : rowData[col.field]
+                        ) | capitalize
+                        }}</span>
+                    </div>
+                    <div *ngIf="
+                        col.field != 'escalatedStatus' && col.field != 'status'
+                      ">
+                      {{ rowData[col.field] }}
+                    </div>
+                    <div *ngIf="col.field == 'escalatedStatus'">
+                      <div *ngIf="rowData[col.field] == 'true'">
+                        <i class="pi pi-arrow-up rhEscalateIcon"></i>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+            <div *ngIf="completedPatientSurvey.length == 0" class="ifNoData"></div>
+          </p-tabPanel>
+        </p-tabView>
+      </div>
+    </div>
+<!-- </div></div> -->
+
+  
+

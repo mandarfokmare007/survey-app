@@ -1,1 +1,791 @@
 /* You can add global styles to this file, and also import other style files */
+@import "variables";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border: 0;
+  outline: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+html {
+  font: 14px/26px "Open Sans", sans-serif;
+  background: $pageBgColor;
+  color: $defaultFontColor;
+  scroll-behavior: smooth;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.container {
+  @include d-flex;
+  flex-direction: column;
+}
+
+.content {
+  // @include d-flex;
+  // flex-direction: row;
+  // & > *:first-child {
+  //   flex: 0 0 200px;
+  // }
+  // & > *:last-child {
+  //   flex: 0 0 calc(100vw - 200px);
+  // }
+}
+
+.mainContent {
+  flex: 1;
+  // padding: 105px 30px 30px 30px;
+  padding: 95px 30px 30px 230px;
+  min-height: calc(100vh - 68px);
+
+  &.fullWidth {
+    padding: 95px 30px 30px;
+  }
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: $headTxtColor;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-size: 34px;
+  line-height: 46px;
+}
+
+h2 {
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+h3 {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+h4 {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.mt {
+  margin-top: 10px;
+}
+
+.mt-2 {
+  margin-top: 20px;
+}
+
+.mt--2 {
+  margin-top: -20px !important;
+}
+
+.mb {
+  margin-bottom: 10px;
+}
+
+.mb-2 {
+  margin-bottom: 20px;
+}
+
+.mr {
+  margin-right: 10px;
+}
+
+.mr-2 {
+  margin-right: 20px;
+}
+
+.ml {
+  margin-left: 10px;
+}
+
+.ml-2 {
+  margin-left: 20px;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.flexInbetween {
+  @include d-flex;
+  @include space-between;
+  align-items: center;
+}
+
+a {
+  color: $anchorBlueColor;
+}
+
+.d-flex {
+  @include d-flex;
+}
+
+.justify-content {
+  @include space-between;
+}
+
+.label {
+  font-size: 13px;
+  color: $midGray2;
+  margin-right: 10px;
+}
+
+// .assessColor {
+//   color:  #05629c;
+//   font-weight: 600;
+// }
+
+// .assessLabel{
+//   font-size: 13px;
+//   margin-right: 10px;
+//   color:  #05629c;
+//   font-weight: 600;
+// }
+.value {
+  font-weight: 700;
+}
+
+.back-btn {
+  margin-right: 10px;
+}
+
+.muted-txt {
+  text-align: center;
+  font-size: 12px;
+  line-height: 14px;
+  color: $midGray1;
+}
+
+.p-dropdown,
+p-accordion {
+  width: 100%;
+}
+
+.clearfix {
+  display: table;
+  width: 100%;
+  clear: both;
+}
+
+.timeDialog {
+  .p-dialog {
+    width: 100%;
+    max-width: 850px;
+  }
+}
+
+.error {
+  .p-dialog-title {
+    color: $errRed;
+  }
+
+  ul {
+    margin-left: 20px;
+  }
+}
+
+input,
+.p-dropdown,
+.p-autoComplete ul,
+textarea {
+  width: 100%;
+  height: 48px;
+}
+
+.patientFilter {
+  p-dropdown {
+    &>div {
+      height: 40px;
+    }
+  }
+}
+
+.reminder {
+  input {
+    width: auto;
+    height: 35px;
+  }
+
+  .p-dropdown {
+    width: auto;
+    height: 35px;
+  }
+
+  .p-autoComplete ul {
+    width: auto;
+    height: 35px;
+  }
+
+  textarea {
+    width: auto;
+    height: 35px;
+  }
+}
+
+.timeDropdown,
+.regularDropdown {
+  .p-dropdown {
+    width: 60px;
+    height: 30px;
+    margin-right: 20px;
+  }
+
+  .hrMins {
+    .p-dropdown {
+      .p-inputtext {
+        padding: 0 0 0 5px !important;
+
+        // color:  #05629c !important;
+      }
+    }
+
+    // .assessColor{
+    //   .p-dropdown {
+    //     .p-inputtext {
+    //       padding: 0 0 0 5px !important;
+    //       color:  #05629c !important;
+    //       font-weight: 500;
+    //     }
+    //   }
+    // }
+  }
+
+  .pColor {
+    width: 100%;
+  }
+
+  .w-180 {
+    width: 213px;
+    margin-right: 25px;
+    //  color: $adBlueBG;
+  }
+
+  .w-70 {
+    width: 66px;
+  }
+}
+
+textarea {
+  min-height: 100px;
+}
+
+.formContainer,
+.pageContainer {
+  position: relative;
+
+  h2 {
+    .backBtn {
+      margin-right: 20px;
+    }
+  }
+
+  .formContent {
+    width: 100%;
+    background: $white;
+    padding: 30px;
+    border-radius: 8px;
+    @include d-flex;
+    flex-wrap: wrap;
+  }
+
+  .leftContent {
+    flex: 1;
+    @include d-flex;
+    flex-wrap: wrap;
+  }
+
+  .rightContent {
+    flex: 0 0 300px;
+    @include d-flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .fullContent {
+    flex: 0 0 100%;
+    text-align: right;
+
+    &>* {
+      margin-left: 30px;
+      width: 160px;
+      text-transform: uppercase;
+    }
+  }
+
+  .formGroup {
+    width: 100%;
+    max-width: calc(50% - 50px);
+    margin: 0 50px 50px 0;
+
+    &.full {
+      max-width: 100%;
+
+      &.child-2 {
+        margin-right: 50px;
+      }
+
+      span.p-autocomplete {
+        .p-autocomplete-multiple-container {
+          width: 100%;
+          padding: 0 8px;
+
+          li {
+            margin-top: 0;
+
+            input {
+              height: 40px;
+            }
+          }
+        }
+      }
+
+      .p-autocomplete {
+        width: 100%;
+      }
+    }
+
+    &:nth-child(2n + 2) {
+      margin-right: 0;
+    }
+
+    &>* {
+      min-width: 100%;
+    }
+
+    &.noMargin {
+      margin-bottom: 10px;
+    }
+  }
+
+  .readOnlyGroup {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 50px 50px 0;
+
+    &.full {
+      max-width: 100%;
+    }
+
+    &:nth-child(2n + 2) {
+      margin-right: 0;
+    }
+
+    &.last {
+      margin-bottom: 0 !important;
+    }
+
+    label {
+      font-size: 12px;
+      line-height: 12px;
+      color: $darkGray;
+      font-weight: 500;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 28px;
+      color: $infoBlue;
+    }
+
+    &>* {
+      min-width: 100%;
+    }
+  }
+}
+
+.appLoader {
+  position: fixed;
+  @include top-left-0;
+  z-index: 9999;
+  @include d-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+
+  .custom-spinner {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+/* To disable Reveal password icon in EDGE starts */
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+
+/* To disable Reveal password icon in EDGE ends */
+.p-d-flex {
+  @include d-flex;
+}
+
+.p-ai-center {
+  align-items: center;
+}
+
+.p-jc-between {
+  @include space-between;
+}
+
+.p-jc-flexend {
+  justify-content: flex-end;
+}
+
+.surveyQuestions p-checkbox .p-checkbox .p-checkbox-box.p-highlight {
+  background: $errRed;
+  border: 1px solid $errRed;
+}
+
+.p-f-wrap {
+  flex-wrap: wrap;
+}
+
+.align-f-start {
+  align-items: flex-start !important;
+}
+
+.align-center {
+  align-items: center !important;
+}
+
+.parBottomSection {
+  margin-top: 20px;
+  @include d-flex;
+  align-items: flex-start;
+
+  .patientsTable {
+    flex: 1;
+  }
+
+  .status,
+  .cycleSummary {
+    flex: 0 0 280px;
+    margin-left: 30px;
+    background: $white;
+    border-radius: 4px;
+    padding: 10px 10px 20px;
+  }
+
+  .chartDetails {
+    border-bottom: 1px solid $litGray;
+    margin-bottom: 15px;
+    line-height: 1.5;
+    @include d-flex;
+    @include space-between;
+  }
+
+  .status {
+    .chartDetails {
+      margin-bottom: -15px;
+    }
+  }
+
+  .cycleViewLogs {
+    list-style: none;
+    font-size: 12px;
+
+    li {
+      margin-bottom: 15px;
+      @include d-flex;
+      flex-direction: row;
+      @include space-between;
+
+      div {
+        flex: 0 0 30%;
+        @include d-flex;
+        flex-direction: column;
+        padding-right: 10px;
+
+        span {
+          flex: 1;
+          float: left;
+          line-height: 1.5;
+
+          &:nth-child(2) {
+            font-weight: 700;
+            color: $defaultFontColor;
+          }
+        }
+      }
+    }
+  }
+}
+
+.ifNoData {
+  width: 100%;
+  padding: 30px;
+  background: $litWhite;
+  border: solid 20px $white;
+  border-radius: 15px;
+  text-align: center;
+  font-size: 28px;
+  color: $litGray;
+  font-weight: 700;
+}
+
+// //  Custon Scrollbar CSS
+// /* width */
+// ::-webkit-scrollbar {
+//   width: 5px;
+//   height: 5px;
+// }
+
+// /* Track */
+// ::-webkit-scrollbar-track {
+//   box-shadow: inset 0 0 2px $litGray;
+//   border-radius: 15px;
+// }
+
+// /* Handle */
+// ::-webkit-scrollbar-thumb {
+//   background: $vLitGray;
+//   border-radius: 15px;
+// }
+
+// /* Handle on hover */
+// ::-webkit-scrollbar-thumb:hover {
+//   background: $litWhite;
+// }
+
+.escalatePop {
+  .p-dialog .p-dialog-header-icons {
+    margin-left: auto;
+  }
+
+  .p-dialog-content {
+    overflow-y: unset !important;
+  }
+}
+
+.timezone {
+  .p-dropdown.p-component {
+    height: 32px !important;
+
+    .p-inputtext {
+      padding: 0 0 0 5px !important;
+    }
+  }
+}
+
+.imp {
+  color: red !important;
+}
+
+.userPic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  vertical-align: middle;
+  display: inline-block;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.escalateBtn {
+  .p-button {
+    background: $escalateColor;
+    border: 1px solid $escalateColor;
+  }
+
+  .p-button:enabled:hover {
+    background: $escalateColorDark;
+    border: 1px solid $escalateColorDark;
+  }
+}
+
+.statusIcon {
+  font-size: 1.5rem;
+  width: 50%;
+  color: rgb(0, 128, 0, 0.5);
+}
+
+.w550 {
+  width: 556px;
+}
+
+.rhEscalateIcon {
+  color: $white !important;
+  background: #dc9f6c !important;
+  border-radius: 50%;
+  padding: 4px;
+  font-size: 9px !important;
+  font-weight: 600 !important;
+
+  &.dashboard {
+    padding: 6px;
+    font-size: 17px !important;
+    width: 30px;
+    height: 30px;
+    float: left;
+    flex: 0 0 30px !important;
+  }
+}
+
+.rhReadyForSignOffIcon {
+  color: $white !important;
+  background: #220d89 !important;
+  border-radius: 50%;
+  padding: 4px;
+  font-size: 9px !important;
+  font-weight: 600 !important;
+
+  &.dashboard {
+    padding: 6px;
+    font-size: 17px !important;
+    width: 30px;
+    height: 30px;
+    float: left;
+    flex: 0 0 30px !important;
+  }
+}
+
+.rhSignOffIcon {
+  color: $white !important;
+  background: #2704ee !important;
+  border-radius: 50%;
+  padding: 4px;
+  font-size: 9px !important;
+  font-weight: 600 !important;
+
+  &.dashboard {
+    padding: 6px;
+    font-size: 17px !important;
+    width: 30px;
+    height: 30px;
+    float: left;
+    flex: 0 0 30px !important;
+  }
+}
+
+.rhEmailIcon {
+  color: #d3d3d3 !important;
+  background: $white !important;
+  border-radius: 50%;
+  padding: 4px;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+
+  &.dashboard {
+    padding: 6px;
+    font-size: 17px !important;
+    width: 30px;
+    height: 30px;
+
+    flex: 0 0 30px !important;
+  }
+}
+
+.redCircleIcon {
+  color: $errRed !important;
+}
+
+.greenCircleIcon {
+  color: $actualGreen !important;
+}
+
+.nameSection {
+  display: flex;
+  align-items: center;
+  // justify-content: space-between;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #aaa;
+
+  h2 {
+    line-height: 1;
+    margin: 0;
+  }
+
+  .patientCount,
+  .patientFilter {
+    margin-left: 80px;
+    display: inline-block;
+  }
+
+  .patientFilter {
+    display: flex;
+    align-items: center;
+
+    p-dropdown {
+      float: left;
+      width: 150px;
+    }
+
+    span {
+      margin-right: 10px;
+      float: left;
+    }
+  }
+}
+
+.delete {
+  align-self: flex-start;
+  background: rgba(255, 0, 0, 0.6);
+  padding: 1px 10px;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+
+  //margin: 30px 30px 0 0;
+  i {
+    font-size: 11px;
+  }
+}
+
+.clearBtn {
+  background: $white;
+  color: $red;
+  border-color: $red;
+}
+
+@media print {
+  .doNotPrint {
+    display: none !important;
+  }
+
+  .mainContent {
+    padding: 20px;
+  }
+
+  body,
+  h1,
+  h2,
+  h3,
+  ol,
+  ul,
+  div {
+    width: auto;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    float: none;
+    position: static;
+    overflow: visible;
+  }
+}
+
+body:has(.surveyResponseFullScreen) {
+  .sideNav {
+    display: none;
+  }
+}
+
+app-patient-overview,
+app-patient-overview .mainContent.fullWidth {
+  height: max-content;
+  display: table;
+  width: 100%;
+}

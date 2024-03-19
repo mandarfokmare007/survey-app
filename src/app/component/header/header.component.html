@@ -1,0 +1,26 @@
+<header class="doNotPrint">
+  <!-- <a href="javascript:void(0)" [routerLink]="['/dashboard']"> -->
+    <!-- <img class="headerLogo" [src]="showLogo" alt="Pain Script Admin" /> -->
+    <h2>Survey App</h2>
+
+  <!-- </a> -->
+  <div class="rightElements">
+    <span class="">
+      <!-- <i class="pi pi-search"></i>
+      <form autocomplete="off">
+        <input type="text" pInputText placeholder="Search" formControlName="globalSearch"
+          pTooltip="Type Minimun 3 Letters and Press Enter to Search..!" tooltipPosition="bottom"
+          tooltipEvent="focus" />
+      </form> -->
+
+    </span>
+    <span 
+     class="userWelcome">
+      <span class="name">Welcome {{ currentUser?.given_name }}! <i class="pi pi-angle-down"></i></span>
+      <!-- <img *ngIf="proImg != null" [src]="proImg" alt="" class="proimg" /> -->
+      <div class="userImg" *ngIf="proImg == null"></div>
+      <!-- <p-menu #topMenu appendTo="body" [popup]="true" [model]="topMenuItems"></p-menu> -->
+    </span>
+  </div>
+</header>
+<!-- <p-toast></p-toast> -->
