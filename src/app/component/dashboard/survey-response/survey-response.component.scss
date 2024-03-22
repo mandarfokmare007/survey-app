@@ -1,0 +1,540 @@
+@import "../../../../variables";
+
+.surveyResponse {
+  &.surveyResponseFullScreen {
+    padding: 80px 30px 30px;
+  }
+
+  .nameSection1 {
+    @include d-flex;
+    // flex-direction: inherit !important;
+    height: 42px;
+    border-bottom: 1px solid $litGray;
+    @include space-between;
+
+    h2 {
+      float: left;
+    }
+
+    p-button {
+      float: right;
+    }
+  }
+
+  .badgeRed {
+    font-size: 12px;
+    background: $actualRed;
+    background: #dc3545 !important;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    color: $white;
+    margin-right: 10px;
+    align-self: center;
+  }
+
+  .badgeGreen {
+    font-size: 12px;
+    background: $actualGreen;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    color: $white;
+    margin-right: 10px;
+    align-self: center;
+  }
+
+  .details {
+    width: 100%;
+    @include d-flex;
+    @include space-between;
+    padding: 10px 0 15px 0;
+    border-bottom: 1px solid $litGray;
+
+    .basics {
+      width: 550px;
+      display: flex;
+
+      .detailsItem {
+        margin-right: 20px;
+      }
+    }
+
+    .detailsItem {
+      @include d-flex;
+      float: left;
+
+      // margin-right: 20px;
+      .label {
+        color: #606060;
+        font-size: 12px;
+        margin-right: 10px;
+      }
+
+      .value {
+        .diagValues {
+          background: $midGray2;
+          color: $white;
+          padding: 2px 8px;
+          font-size: 12px;
+          line-height: 20px;
+          float: left;
+          margin-right: 5px;
+          border-radius: 4px;
+        }
+      }
+    }
+  }
+
+  .subTitle {
+    @include d-flex;
+    @include space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid $litGray;
+
+    .checkInSection {
+      @include d-flex;
+      align-items: center;
+
+      .item {
+        margin: 0 30px 0 0;
+        display: flex;
+
+        .statusHighRed {
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+  }
+
+  .topBtns {
+    float: left;
+    @include d-flex;
+    @include space-between;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 465px;
+
+    .leftSide {
+      line-height: 30px;
+
+      .label {
+        font-size: 12px;
+        color: $midGray2;
+        margin-right: 10px;
+      }
+
+      .value {
+        font-weight: 700;
+      }
+    }
+
+    .rightSide {
+      @include d-flex;
+
+      p-button {
+        margin-left: 15px;
+      }
+    }
+  }
+
+  .bottomSection {
+    margin-top: 30px;
+    @include d-flex;
+    float: left;
+    width: 100%;
+
+    .dailyStats {
+      flex: 1;
+
+      .chartsContainer {
+        @include d-flex;
+        // @include space-between;
+        flex-wrap: wrap;
+
+        // margin-right: 30px;
+        .chartItem {
+          width: 30%;
+          min-height: 152px;
+          margin-bottom: 30px;
+          overflow: hidden;
+          background: #fff;
+          padding: 10px;
+          border: 1px solid #999;
+          margin-right: 3.3%;
+        }
+      }
+
+      .msgForClinician {
+        width: 80%;
+
+        h2 {
+          font-weight: 700;
+          color: $midGray2;
+        }
+
+        p {
+          color: #6d81a0;
+        }
+      }
+
+      .statsContent {
+        @include d-flex;
+        flex-direction: row;
+        margin-bottom: 30px;
+
+        &>* {
+          width: 24%;
+          margin-right: 1.3%;
+
+          &:last-child {
+            margin-right: 0;
+          }
+
+          .chartBox {
+            width: 100%;
+            border: 1px solid $litGray;
+            border-radius: 8px;
+            margin-top: 10px;
+            overflow: hidden;
+
+            img {
+              width: 100%;
+            }
+          }
+        }
+      }
+
+      .msgFromPatient {
+        width: 50%;
+      }
+    }
+
+    .histories {
+      width: 100%;
+      max-width: 500px;
+
+      .revHistory,
+      .patientHistory {
+        width: 100%;
+        background: $white;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        padding: 10px;
+        float: left;
+        color: $midGray1;
+
+        h2 {
+          border-bottom: 1px solid $litGray;
+          padding-bottom: 5px;
+          margin-bottom: 10px;
+          color: $defaultFontColor;
+
+          span {
+            float: right;
+            font-size: 14px;
+            color: $litGray2;
+            font-weight: 400;
+            margin-top: 5px;
+
+            strong {
+              color: $midGray2;
+            }
+          }
+        }
+      }
+
+      .h2Border {
+        border-bottom: 1px solid $litGray;
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+
+        h2 {
+          border-bottom: 0;
+          padding-bottom: 0px;
+          margin-bottom: 0px;
+        }
+
+        .noteIcon {
+          float: right;
+          margin-bottom: 5px;
+
+          i {
+            margin-right: 10px;
+          }
+        }
+      }
+
+      .revLogs {
+        list-style: none;
+        font-size: 12px;
+
+        li {
+          border-bottom: 1px solid $vLitGray;
+          padding-bottom: 8px;
+          margin-bottom: 8px;
+
+          &:last-child {
+            border-bottom: 0;
+          }
+
+          .labelsSection {
+            font-weight: 700;
+
+            span:nth-child(2) {
+              width: 110px;
+              display: inline-block;
+            }
+
+            .escTo {
+              text-transform: capitalize;
+            }
+
+            span {
+              margin-right: 30px;
+
+              &:nth-child(3) {
+                i {
+                  margin-right: 5px;
+                  color: $actualRed;
+                }
+              }
+            }
+          }
+
+          .description {
+            color: $midGray1;
+            line-height: 1.5;
+            font-size: 14px;
+          }
+        }
+      }
+
+      .patientLogs {
+        list-style: none;
+        font-size: 12px;
+
+        .cycleRow {
+          @include d-flex;
+          @include space-between;
+
+          div {
+            display: inline-block;
+
+            span {
+              font-weight: 700;
+              color: $defaultFontColor;
+            }
+
+            &:last-child {
+              margin: 0;
+            }
+          }
+
+          .cycle {
+            flex: 1;
+          }
+
+          .day {
+            flex: 1;
+          }
+
+          .progBar {
+            flex: 3;
+            margin-right: 20px;
+          }
+
+          .endDate {
+            flex: 2;
+          }
+
+          .surveyCycleTitle {
+            flex: 1.3;
+          }
+
+          .surveyCycle {
+            flex: 1;
+          }
+
+          .surveyPer {
+            flex: 1;
+          }
+
+          .surveyTar {
+            flex: 1;
+            @include icon-red-green;
+          }
+
+          .surveyOverallTitle {
+            flex: 1.3;
+          }
+
+          .surveyOverall {
+            flex: 1;
+          }
+
+          .cyclePer {
+            flex: 1;
+          }
+
+          .cycleTar {
+            flex: 1;
+            @include icon-red-green;
+          }
+
+          .cycleHisTitle {
+            width: 80px;
+            display: inline-block;
+          }
+
+          .cycleHis {
+            flex: 0px;
+            display: inline-block;
+            justify-content: space-between;
+            align-items: left;
+
+            .day {
+              width: 18px;
+              height: 18px;
+              border-radius: 4px;
+              color: $white;
+              margin: 0 5px 3px 0;
+              text-align: center;
+              float: left;
+              padding: 0 0 3px 0;
+              line-height: 20px;
+              font-size: 12px;
+              font-weight: 300;
+              @include red-green-grey;
+            }
+          }
+        }
+
+        li {
+          margin-bottom: 10px;
+          @include d-flex;
+          flex-direction: row;
+
+          div {
+            flex: 1;
+            @include d-flex;
+            padding-right: 10px;
+
+            span {
+              flex: 1;
+              float: left;
+              line-height: 1.5;
+
+              &:nth-child(2) {
+                font-weight: 700;
+                color: $defaultFontColor;
+              }
+            }
+
+            &.progBar {
+              width: 200px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .checkBox {
+    padding-top: 5px;
+    padding-bottom: 10px;
+    display: flex;
+
+    .msg {
+      padding-left: 5px;
+      display: inline-flex;
+      font-size: 16px;
+    }
+  }
+
+  .msgToPatient {
+    margin-top: -5px;
+  }
+}
+
+.modalTitleSection {
+  display: flex;
+  //justify-content: space-between;
+  align-items: flex-start;
+
+  img {
+    width: 80px;
+    margin-right: 30px;
+  }
+
+  .modalTitle {
+    font-size: 30px;
+    line-height: 45px;
+    margin-bottom: 15px;
+  }
+
+  .modalContent {
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+
+  .errorTitle {
+    font-size: 30px;
+    padding-right: 30px;
+  }
+
+  .errorContent {
+    margin-top: 10px;
+    font-size: 18px;
+  }
+}
+
+.popBtn-container {
+  width: 100%;
+  float: left;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid $litGray;
+  display: flex;
+  flex-direction: row-reverse;
+
+  button {
+    margin-left: 15px;
+  }
+}
+
+.surveyReview {
+  margin-top: 0px !important;
+}
+
+.statusRed {
+  color: #dc3545 !important;
+}
+
+.reviewNoteGroup {
+  border-top: 1px solid #aaa;
+  // display: inline-flex;
+  display: flow-root;
+
+  .formGroup {
+    margin-top: 30px;
+  }
+
+  .formContent {
+    .content {
+      margin-top: 25px;
+      @include space-between;
+      margin-left: 250px;
+    }
+  }
+}
+
+.psid-block {
+  margin-right: 50%;
+
+  .font {
+    color: $litGray;
+    margin-right: 5px;
+  }
+}

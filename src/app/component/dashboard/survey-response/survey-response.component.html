@@ -1,0 +1,523 @@
+<div>
+    <!--  class="mainContent fullWidth" -->
+    <div [ngClass]=" fullScreen ? 'surveyResponse surveyResponseFullScreen' : 'surveyResponse'">
+      <div class="patientDetails">
+        <!-- Patient Name Section and Back button-->
+        <div class="nameSection1">
+          <h2>Survey Review : {{ patientDetails?.name }}</h2>
+          <div class="psid-block">
+            <span class="font">PSID: </span><b>{{ patientDetails?.patientId }}</b>
+          </div>
+          <p-button (click)="goBack()" label="Back" icon="pi pi-angle-left" styleClass="p-button-sm"></p-button>
+  
+        </div>
+        <!-- Sub Header details-->
+        <div class="details">
+          <div class="basics">
+            <div class="detailsItem">
+              <span class="label">Gender:</span>
+              <div class="value">{{ patientDetails?.gender }}</div>
+            </div>
+            <div class="detailsItem">
+              <span class="label">DOB:</span>
+              <div class="value">{{ patientDetails?.dob }}</div>
+            </div>
+            <div class="detailsItem">
+              <span class="label">Age:</span>
+              <div class="value">{{ patientDetails?.age }}</div>
+            </div>
+            <div class="detailsItem">
+              <span class="label">Ht:</span>
+              <div class="value">
+                {{ patientDetails?.height }}
+                {{ getUnitType == "M" ? "cm" : "in" }}
+              </div>
+            </div>
+            <div class="detailsItem">
+              <span class="label">Wt:</span>
+              <div class="value">
+                {{ patientDetails?.weight }}
+                {{ getUnitType == "M" ? "kg" : "lbs" }}
+              </div>
+            </div>
+          </div>
+  
+          <div class="detailsItem">
+            <span class="label">Phone:</span>
+            <div class="value">{{ patientDetails?.phone }}</div>
+          </div>
+          <div class="d-flex">
+            <div class="detailsItem">
+              <span class="label">Diagnoses:</span>
+              <div class="value" *ngIf="patientDisorders.length > 0">
+                <!-- <span class="diagValues" *ngFor="let diagValues of patientDisorders" [pTooltip]="diagValues.value"
+                  tooltipPosition="top">{{ diagValues.name }}</span> -->
+              </div>
+              <div class="value" *ngIf="patientDisorders.length <= 0">
+                <span>NA</span>
+              </div>
+            </div>
+            <div class="detailsItem">
+              <span class="label">Comorbidities:</span>
+              <div class="value" *ngIf="patientComorbidities.length > 0">
+                <!-- <span class="diagValues" *ngFor="let comorbidity of patientComorbidities" [pTooltip]="comorbidity.value"
+                  tooltipPosition="top">{{ comorbidity.name }}</span> -->
+              </div>
+              <div class="value" *ngIf="patientComorbidities.length <= 0">
+                <span>NA</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="subTitle">
+          <div class="checkInSection">
+            <div class="item">
+              <!-- <span class="mr-2" *ngIf="painStatus === 'green' || painStatus == 'red'"
+                [ngClass]="[painStatus === 'red' ? 'badgeRed' : 'badgeGreen']">{{ painStatus | uppercase }}</span> -->
+              <div class="statusHighRed mr-2" *ngIf="painStatus === 'RED'">
+                <span class="mr-2" [ngClass]="['badgeRed']">{{ painStatus | uppercase }}
+                </span>
+                <i pTooltip="PRIORITY ALERT" tooltipPosition="top" class="icon-patient-in-high-red-survey ml"></i>
+              </div>
+              <span class="value">{{ surveyDataReview?.survey }}</span>
+            </div>
+            <div class="item">
+              <span class="value">{{ surveyDataReview?.submitted }}</span>
+            </div>
+            <div class="item">
+              <span class="">Open:</span>
+              <span class="value">{{ surveyDataReview?.openDuration }}</span>
+            </div>
+            <div class="item" *ngIf="surveyResponseScore != null">
+              <span class="">Score: </span>
+              <span class="value" [ngClass]="
+                  painStatus === 'red'
+                    ? 'statusRed'
+                    : painStatus === 'RED'
+                    ? 'statusRed'
+                    : ''
+                ">
+                {{ surveyResponseScore }}</span>
+            </div>
+            <div class="item" *ngIf="isSpentTime">
+              <span class="">Spent Time: </span>
+              <span class="value"> {{ spentTime }}</span>
+            </div>
+          </div>
+          <!-- 1. Review Events buttons  -->
+          <div class="topBtns">
+            <div class="leftSide">
+              <span class="label">Review Time:</span>
+              <span class="value">{{ counter }}</span>
+            </div>
+            <div class="rightSide">
+              <p-button label="Escalate" icon="pi pi-arrow-circle-up" styleClass="p-button-sm" class="escalateBtn"
+                (click)="showEscalationDialog()">
+              </p-button>
+              <div *ngIf="!isRTMUser">
+                <div *ngIf="signOff">
+                  <p-button label="Close" icon="pi pi-check" styleClass="p-button-sm"
+                    (click)="showCompleteSurveyDialog()">
+                  </p-button>
+                </div>
+                <div *ngIf="!signOff">
+                  <p-button *ngIf="!isRoleAssistant && isRoleQhp" label="Close" icon="pi pi-check"
+                    styleClass="p-button-sm" (click)="showCompleteSurveyDialog()">
+                  </p-button>
+                  <p-button *ngIf="isRoleAssistant || !isRoleQhp" label="Ready For Sign Off" icon="pi pi-check"
+                    styleClass="p-button-sm" (click)="showCompleteSurveyDialog()">
+                  </p-button>
+                </div>
+              </div>
+              <div *ngIf="isRTMUser">
+                <div>
+                  <p-button label="Close" icon="pi pi-check" styleClass="p-button-sm"
+                    (click)="showCompleteSurveyDialog()">
+                  </p-button>
+                </div>
+              </div>
+              <!-- <button class="noteIcon" pButton pRipple type="button" (click)="showAddNotesDialog()">
+                <i class="icon-note"></i> Add Note</button>  -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bottomSection">
+        <div class="dailyStats">
+          <!-- TBD checkin, Submitted and OpenFor should be i a single row element-->
+          <div class="msgForClinician" *ngFor="let message of msgsForClinician">
+            <div *ngIf="message.question.value">
+              <h2>{{ message.question.questionLabel }}</h2>
+              <p>{{ message.question.value }}</p>
+            </div>
+          </div>
+          <div class="chartsContainer">
+            <div class="chartItem" *ngFor="let chartData of chartsData">
+              <!-- <app-response-analytics [chartItem]="chartData"></app-response-analytics> -->
+            </div>
+          </div>
+        </div>
+        <!-- 
+                right side panel Which contain 
+                1. Review History
+                2. Recent Notes 
+                3. Patient History
+              -->
+        <div class="histories">
+          <!-- 1. Review History -->
+  
+          <div class="revHistory">
+            <div class="flexInbetween h2Border">
+              <h2>Review History</h2>
+              <p-button label="Add Note" icon="icon-note" styleClass="p-button-sm" (click)="showAddNotesDialog()">
+              </p-button>
+            </div>
+            <ul class="revLogs" *ngIf="reviewPatientHistory.length">
+              <li *ngFor="let dataReview of reviewPatientHistory">
+                <div class="labelsSection">
+                  <span>{{ dataReview?.escalationDate }}</span>
+                  <span>{{ dataReview?.escalatedFrom }}</span>
+                  <span *ngIf="dataReview?.escalatedTo" class="escTo"><i [ngClass]="
+                        dataReview.status == 'Escalated'
+                          ? 'pi pi-arrow-up rhEscalateIcon'
+                          : ''
+                      "></i>{{ dataReview?.escalatedTo }}</span>
+                  <span *ngIf="dataReview.status == 'NotesAdded'"><i class="icon-note-filled"></i> Note</span>
+                </div>
+                <div class="description">
+                  {{ dataReview?.escalationNote }}
+                </div>
+                <div *ngIf="dataReview?.patientMessage">
+                  <div class="labelsSection">
+                    <span>{{ dataReview?.escalationDate }}</span>
+                    <!-- style="width: auto !important" -->
+                    <span>{{ dataReview?.escalatedFrom }} > Patient</span>
+                  </div>
+                  <div class="description">
+                    {{ dataReview?.patientMessage }}
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <div *ngIf="!reviewPatientHistory.length" class="ifNoData"></div>
+          </div>
+  
+          <!-- 2.Recent Notes -->
+          <div class="revHistory" *ngIf="recentNotes.length">
+            <div class="flexInbetween h2Border">
+              <h2><i class="icon-note-filled"></i> Recent Notes</h2>
+            </div>
+            <ul class="revLogs">
+              <li *ngFor="let note of recentNotes">
+                <div class="labelsSection">
+                  <span>{{ note?.escalationDate }}</span>
+                  <span>{{ note?.escalatedFrom }}</span>
+                </div>
+                <div class="description">{{ note?.escalationNote }}</div>
+              </li>
+            </ul>
+          </div>
+  
+          <!-- 3. Patient History-->
+          <div class="patientHistory">
+            <h2>
+              Patient History
+              <span>Engagement Target:
+                <strong>{{ patientHistory?.engagementTarget }}</strong></span>
+            </h2>
+            <div class="patientLogs">
+              <div class="cycleRow">
+                <div class="cycle">
+                  Cycle: <span>{{ patientHistory?.cycleNumber }}</span>
+                </div>
+                <div class="day">
+                  Day: <span>{{ patientHistory?.cycleDay }}</span>
+                </div>
+                <div class="progBar">
+                  <p-progressBar [value]="getSurveyPercentage(patientHistory?.cycleDay)"></p-progressBar>
+                </div>
+                <div class="endDate">
+                  End: <span>{{ patientHistory?.cycleEndDate }}</span>
+                </div>
+              </div>
+              <div class="cycleRow">
+                <div class="surveyCycleTitle">Surveys, this Cycle:</div>
+                <div class="surveyCycle">
+                  <span>{{ patientHistory?.cycleSurveys }}</span>
+                </div>
+                <div class="surveyPer">
+                  <span>{{ patientHistory?.cyclePercentage }}</span>
+                </div>
+                <div class="surveyTar">
+                  <span><i [ngClass]="
+                        patientHistory?.cycleTarget == 'Meets Target'
+                          ? 'pi pi-check-circle green'
+                          : 'pi pi-minus-circle red'
+                      "></i>
+                    {{ patientHistory?.cycleTarget }}</span>
+                </div>
+              </div>
+              <div class="cycleRow">
+                <div class="surveyOverallTitle">Surveys, Overall:</div>
+                <div class="surveyOverall">
+                  <span>{{ patientHistory?.overallSurveys }}</span>
+                </div>
+                <div class="cyclePer">
+                  <span>{{ patientHistory?.overallPercentage }}</span>
+                </div>
+                <div class="cycleTar">
+                  <span><i [ngClass]="
+                        patientHistory?.overallTarget == 'Meets Target'
+                          ? 'pi pi-check-circle green'
+                          : 'pi pi-minus-circle red'
+                      "></i>
+                    {{ patientHistory?.overallTarget }}</span>
+                </div>
+              </div>
+              <div class="cycleRow">
+                <div class="cycleHisTitle">Cycle History:</div>
+                <div class="cycleHis" *ngIf="patientHistory?.cycleHistory?.length">
+                  <span *ngFor="let cycleHistory of patientHistory?.cycleHistory" class="day" [ngClass]="[
+                      cycleHistory.color == 'Red' ? 'day red' : 'day',
+                      cycleHistory.color == 'Green' ? 'day green' : 'day',
+                      cycleHistory.color == 'Grey' ? 'day grey' : 'day'
+                    ]">
+                    {{ cycleHistory.day }}
+                  </span>
+                </div>
+                <div class="cycleHis" *ngIf="!patientHistory?.cycleHistory?.length">
+                  <span>NA</span>
+                </div>
+                <div class="cycleHis"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- </div> -->
+  
+  <!-- Escalate Popup -->
+  <p-dialog class="escalatePop" [(visible)]="displayEscalationDialog" [style]="{ width: '50vw' }" [modal]="true"
+    [baseZIndex]="10000" [responsive]="true" [draggable]="false">
+    <form [formGroup]="surveyReviewForm" (ngSubmit)="escalateSurvey()" autocomplete="off">
+      <h2>Escalate Survey : {{ patientDetails?.name }}</h2>
+      <p-dropdown [style]="{ width: '70%', height: '48px' }" [options]="physiciansList" optionLabel="fullName"
+        placeholder="Escalate to*" formControlName="selectedPhysician" (onChange)="updateEscalatedTo($event)">
+      </p-dropdown>
+      <div *ngIf="
+          surveyReviewForm.get('selectedPhysician')?.invalid &&
+          (surveyReviewForm.get('selectedPhysician')?.dirty ||
+            surveyReviewForm.get('selectedPhysician')?.touched)
+        " class="error error-danger">
+         <small *ngIf="surveyReviewForm.get('selectedPhysician')?.errors?.['required']" class="p-error">Escalate to is required -->
+        </small> 
+      </div>
+  
+      <div class="formGroup full mt-2" style="margin-top: 30px">
+        <span class="p-float-label">
+          <textarea formControlName="notes" id="notes" pInputTextarea placeholder="Escalation Notes*"
+            formControlName="escalationNotes" maxLength="255"></textarea>
+        </span>
+        <div *ngIf="
+            surveyReviewForm.get('escalationNotes')?.invalid &&
+            (surveyReviewForm.get('escalationNotes')?.dirty ||
+              surveyReviewForm.get('escalationNotes')?.touched)
+          " class="error error-danger">
+          <small *ngIf="surveyReviewForm.get('escalationNotes')?.errors?.['required']" class="p-error">Escalation Notes is
+            required
+          </small>
+        </div>
+      </div>
+      <div class="popBtn-container">
+        <button pButton pRipple label="Cancel" type="button" (click)="hideEscalationDialog()"
+          class="p-button cancelBtn"></button>
+        <button pButton pRipple label="Submit" type="submit" class="p-button" [disabled]="IsInvalid()"></button>
+      </div>
+    </form>
+  </p-dialog>
+  
+  <!-- Complete Popup -->
+  <p-dialog class="escalatePop" [(visible)]="displayCompleteSurveyDialog" [style]="{ width: '50vw' }" [modal]="true"
+    [baseZIndex]="10000" [responsive]="true" [draggable]="false">
+    <h2>Close Survey : {{ patientDetails?.name }}</h2>
+    <form [formGroup]="surveyReviewCompleteForm" (ngSubmit)="completeSurvey()" autocomplete="off">
+      <span class="label">Review Time:</span>
+      <span class="value">{{ counter }}</span>
+      <div class="formGroup" *ngIf="!isRoleQhp && !signOff">
+        <br />
+        <span class="p-float-label">
+          <p-dropdown [style]="{ width: '70%', height: '48px' }" [options]="preDefinedRemarks" optionLabel="value"
+            placeholder=" " formControlName="reviewRemark" (onChange)="updatereviewRemark($event)">
+          </p-dropdown>
+          <label for="">Select Remark</label>
+        </span>
+      </div>
+      <div class="formGroup" *ngIf="isRoleQhp || signOff">
+        <span class="p-float-label">
+          <textarea formControlName="notes" id="notes" pInputTextarea placeholder="Remark" formControlName="reviewRemark"
+            maxLength="255"></textarea>
+        </span>
+      </div>
+  
+      <div class="formGroup">
+        <div class="checkBox">
+          <p-checkbox name="patientMessage" value="surveyReviewCompleteForm.controls['messageCheck'].value"
+            [binary]="true" formControlName="messageCheck" (onChange)="messageCheckOnChange($event)"></p-checkbox>
+          <div class="msg">
+            <span class="msgTitle">Message To Patient</span>
+          </div>
+        </div>
+      </div>
+  
+      <div class="formGroup">
+        <span class="p-float-label">
+          <textarea formControlName="message" id="message" pInputTextarea placeholder="Patient Message"
+            formControlName="message" maxLength="255"></textarea>
+          <div *ngIf="
+              surveyReviewCompleteForm.get('message')?.invalid &&
+              surveyReviewCompleteForm.get('message')?.touched
+            " class="error error-danger msgToPatient">
+            <small *ngIf="surveyReviewCompleteForm.get('message')?.errors?.['required']" class="p-error">Message to patient is
+              required
+            </small>
+          </div>
+        </span>
+      </div>
+  
+      <div class="popBtn-container">
+        <button pButton pRipple label="Cancel" type="button" (click)="hideSurveyCompleteDialog()"
+          class="p-button cancelBtn"></button>
+        <button pButton pRipple label="Submit" type="submit" class="p-button"
+          [disabled]="IsCompleteSurveyInvalid()"></button>
+      </div>
+    </form>
+  </p-dialog>
+  
+  <p-dialog class="escalatePop" [(visible)]="showTimeoutAlert" [style]="{ width: '25vw' }" [modal]="true"
+    [baseZIndex]="10000" [responsive]="true">
+    <div class="modalTitleSection">
+      <img src="../../../assets/question-mark.png" alt="" />
+      <p class="modalTitle">Are you still reviewing this Survey?</p>
+    </div>
+    <div class="modalContent">
+      <p>
+        Time recording will pause in: <strong>{{ countdown }} seconds</strong>
+      </p>
+      <p>Move your cursor to resume</p>
+      <p class="orTxt">OR</p>
+    </div>
+    <div class="popBtn-container">
+      <button pButton pRipple label="Click here" (click)="hideTimeoutAlertDialog()" class="p-button"></button>
+    </div>
+  </p-dialog>
+  
+  <p-dialog class="escalatePop" [(visible)]="showReviewPaused" [style]="{ width: '25vw' }" [modal]="true"
+    [baseZIndex]="10000" [responsive]="true" [closable]="false" [closeOnEscape]="false">
+    <!-- <span style="color: red; font-weight: bold">Attention!</span> -->
+    <div class="modalTitleSection">
+      <img src="../../../assets/circled-pause.png" alt="" />
+      <div>
+        <p class="modalTitle">The Survey Review has been paused.</p>
+        <p class="modalContent">
+          Review Time <strong>{{ counter }}</strong>
+        </p>
+      </div>
+    </div>
+    <div class="popBtn-container">
+      <button pButton pRipple label="Continue" (click)="continueSurveyReview()" class="p-button mr-2"></button>
+      <button pButton pRipple label="Cancel" (click)="cancelSurveyReview()"
+        class="p-button-outlined p-button-danger cancelMarginBtn"></button>
+    </div>
+  </p-dialog>
+  
+  <p-dialog class="escalatePop" [(visible)]="showErrorDialog" [style]="{ width: '25vw' }" [modal]="true"
+    [baseZIndex]="10000" [responsive]="false" [draggable]="false" [closeOnEscape]="false" [closable]="false">
+    <div class="modalTitleSection">
+      <img src="../../../assets/yellow-exclamation-mark.png" alt="" />
+      <div>
+        <p class="errorTitle"><b>Patient Access</b></p>
+        <p class="errorContent">{{ error }}</p>
+      </div>
+    </div>
+    <div class="popBtn-container">
+      <button pButton pRipple label="OK" (click)="redirectToDashboard()"
+        class="p-button-outlined p-button-secondary"></button>
+    </div>
+  </p-dialog>
+  
+  <!-- Add notes pop-up -->
+  <p-dialog class="escalatePop" header="Add Review Note" [(visible)]="displayAddNotesDialog" [modal]="true"
+    [resizable]="false" [draggable]="false" [closeOnEscape]="false" [closable]="false">
+    <form autocomplete="off" [formGroup]="addReviewNoteFormGroup" class="reviewNoteGroup">
+      <div class="formContent">
+        <div class="leftContent">
+          <div class="formGroup">{{ date | date : "MM/dd/yyyy, HH:mm" }}</div>
+  
+          <div class="formGroup">
+            <span class="p-float-label">
+              <p-dropdown formControlName="physician" [options]="newFilteredAddReviewNoteArray"
+                [(ngModel)]="selectedAddReviewNotePhysician" optionLabel="name" optionValue="id"
+                [style]="{ width: '50%', height: '38px' }" (onChange)="onAddNotePhysicianChange($event)"></p-dropdown>
+              <!-- <label for="float-input">User <span class="imp">*</span></label> -->
+            </span>
+          </div>
+  
+          <div class="formGroup">
+            <span class="p-float-label">
+              <textarea [rows]="5" [cols]="30" maxlength="255" formControlName="reviewNotes" pInputTextarea></textarea>
+              <label for="float-input">Note <span class="imp">*</span></label>
+            </span>
+            <div *ngIf="
+                addReviewNoteFormGroup.get('reviewNotes')?.invalid &&
+                (addReviewNoteFormGroup.get('reviewNotes')?.dirty ||
+                  addReviewNoteFormGroup.get('reviewNotes')?.touched)
+              " class="error error-danger">
+              <small *ngIf="
+                  addReviewNoteFormGroup.get('reviewNotes')?.errors?.['required']
+                " class="p-error">Note is required</small>
+            </div>
+          </div>
+  
+          <div class="formGroup">
+            <div class="checkBox">
+              <p-checkbox name="patientMessage" value="addReviewNoteFormGroup.controls['reviewTimeCheck'].value"
+                [binary]="true" formControlName="reviewTimeCheck" (onChange)="timeReviewCheckOnChange($event)">
+              </p-checkbox>
+              &nbsp;
+              <span>Add Review Time </span>
+            </div>
+          </div>
+  
+          <div class="formGroup" *ngIf="displayTimeOnCheck">
+            <span class="p-float-label">
+              <input id="float-input" type="text" formControlName="time" maxlength="2"
+                [style]="{ width: '25%', height: '30px' }" pInputText />
+              minutes
+              <label for="float-input">Time <span class="imp">*</span></label>
+            </span>
+            <div *ngIf="
+                addReviewNoteFormGroup.get('time')?.invalid &&
+                (addReviewNoteFormGroup.get('time')?.dirty ||
+                  addReviewNoteFormGroup.get('time')?.touched)
+              " class="error error-danger">
+              <small *ngIf="addReviewNoteFormGroup.get('time')?.errors?.['required']" class="p-error">Time is required</small>
+            </div>
+            <div class="error error-danger">
+              <small *ngIf="addReviewNoteFormGroup.get('time')?.errors?.['pattern']" class="p-error">Time is invalid</small>
+            </div>
+          </div>
+  
+          <div class="popBtn-container">
+            <button pButton pRipple type="button" class="p-button-outlined p-button-danger" icon="pi pi-times"
+              label="Cancel" (click)="hideAddReviewNoteDialog()"></button>
+            <button pButton pRipple type="submit" class="p-button" icon="pi pi-plus-circle" label="Add Review Note"
+              [disabled]="IsAddReviewNoteInvalid()" (click)="onSubmitAddReviewNote()"></button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </p-dialog>
+  
+  <!-- <p-toast></p-toast> -->

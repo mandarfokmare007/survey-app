@@ -1,0 +1,67 @@
+<div class="mainContent">
+    <div class="pageContainer">
+        <div class="accBlockedContent" *ngIf="isBlockedAccount">
+            <h5><i class="icon-patient-in-red"></i>Your PainScript Account has been temporarily disabled.</h5>
+            <p>To reactivate your account or if you have any questions, please contact your PainScript Account
+                Representative.</p>
+        </div>
+        <div>
+            <div class="nameSection nameSectionCR  p-jc-between align-center"
+                [ngClass]="isBlockedAccount ? 'accBlocked' : ''">
+                <div class="d-flex p-jc-between align-center">
+                    <h2>Cycle Review</h2>
+                    <div class="patientCount">
+                        {{reports.length}} Reviews
+                    </div>
+                    <div class="patientFilter">
+                        <span>View</span>
+                        <p-dropdown [options]="last6Months" 
+                            optionLabel="month" 
+                            [(ngModel)]="selectedDropdownValueCopy"
+                            (onChange)="filterReports($event)"
+                            [disabled]="isBlockedAccount">
+                        </p-dropdown>
+                    </div>
+                </div>
+
+
+                <button pButton pRipple *ngIf="reports.length" class="" label="Export" icon="pi pi-download"
+                    (click)="export()"
+                    [disabled]="isBlockedAccount"></button>
+            </div>
+        </div>
+        <div class="content">
+            <div class="leftContentCycleReview"
+                [ngClass]="isBlockedAccount ? 'accBlocked' : ''">
+                <p-table *ngIf="reports.length" [value]="reports">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th *ngFor="let col of tableColumns">{{col}}</th>
+                            <th width="50"></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-report>
+                        <tr>
+                            <td><span>{{report.cycleNum}}</span></td>
+                            <td><span>{{report.name}}</span></td>
+                            <td>{{report.cycleEndDate}}</td>
+                            <td><span>{{report.completionRate}}</span></td>
+                            <td>{{report.nonQhpTime}}</td>
+                            <td>{{report.qhpTime}}</td>
+                            <td>{{report.reviewTime}}</td>
+                            <td *ngIf="report.isReviewed != 0">
+                                <i class="icon-reviewed-surveys statusIcon" pTooltip="Reviewed" (click)="getCycleReviewDetails(report)"
+                                    tooltipPosition="top"></i>
+                            </td>
+                            <td *ngIf="report.isReviewed == 0">   
+                                    <i class="pi pi-angle-right cursor" (click)="getCycleReviewDetails(report)"></i>                           
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <div *ngIf="reports.length == 0" class="ifNoData"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<p-toast></p-toast>
